@@ -23,11 +23,8 @@
 <?php
 //include_once('navigation.php');
 
-$str = __DIR__.'/autoload.php';
-echo '<br>';var_dump('мы показываем эту текущую директорию из index.php --->'.__DIR__);
-echo '<br>';var_dump('мы хотим подключить файл autoload.php из текущей директории--->'.__DIR__.'/autoload.php из index.php ');
 require __DIR__.'/autoload.php';
-$db = new \Db();
+
 /*
 if(null !== $user = \Models\User::getUser('login2','password2') ){
     echo '<br> есть такой пользователь: '.'login2 '.' password2';
@@ -35,13 +32,7 @@ if(null !== $user = \Models\User::getUser('login2','password2') ){
    // require __DIR__ . '/templates/indexUserView.php';
 }
 
-echo '<br>';
-if(null !== $user = \Models\User::getUser('l_Ksenia','p_Revo') ){
-    echo '<br> есть такой пользователь: '.'l_Ksenia '.' p_Revo';
-    $userData = $user;
-    require __DIR__ . '/templates/indexUserView.php';
-}
-*/
+
 
 //вставка нового пользователя в таблицу users
 /*if(null == $userData = \Models\User::getUser('login2','password2') ) {
@@ -50,16 +41,12 @@ if(null !== $user = \Models\User::getUser('l_Ksenia','p_Revo') ){
 }else{
     echo 'не получиться вставить второй раз login2,password2';
 }*/
+
 //показать всех юзеров на экране
-
-//$db = new \App\Db();
-/*$res = $db->query('SELECT * FROM users ORDER BY name_user',\Models\User);
-var_dump($res);*/
-    // require __DIR__.'/templates/indexUsersAllView.php';
-    // PokazVsehUsers( $arrUsers);
-     //$usersAll = new \Models\Users($arrUsers);
-     //PokazVsehUsers($usersAll->GetAllUsersFromObjectClassUsers());
-
+//$users = \App\Models\User::GetAllUsers();
+//var_dump($users);
+$user = \App\Models\User::getUser('login2','password2');
+var_dump($user);
 ?>
 
 </body>

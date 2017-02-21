@@ -1,5 +1,7 @@
 <?php
-namespace Models;
+namespace  App\Models;
+
+use App\Db;
 
 class User
 {
@@ -13,6 +15,7 @@ class User
     public $date_last_visit;
     public $ip_last_visit;
 
+    const TABLE = 'users';
    /* public function __construct($_id_user,$_name_user, $_email_user, $_login,$_password, $_id_role = 3, $_date_reg, $_date_last_visit='null', $_ip_last_visit='null')
     {
         $this->id_user = $_id_user;
@@ -35,37 +38,17 @@ class User
     public function geDateLastVisit(){return $this->date_last_visit;}
     public function getIpLastVisit(){return $this->ip_last_visit;}
     */
-    public static function GetAllUsers(){
-        $dsn = 'mysql:host=127.0.0.1;dbname=team_project5';
-        $dbh = new \PDO($dsn,'root','');
-        $sth = $dbh->prepare('SELECT * FROM users ORDER  BY name_user ');
-        $res = $sth->execute();
-        if(false !==$res){
-            return $sth->fetchAll(\PDO::FETCH_CLASS,\Models\User);
-        }
-        $data = $sth->fetchAll();
-       /* foreach ($data as $user){
-            $allUsers[]= $user;
-        }
-        foreach ($data as $u){
-            $allU[]=new User($data['id_user'],$data['name_user'] ,$data['email_user'] ,$data['login'] ,$data['password'] ,$data['id_role'],$data['ip_date_reg']);
-        }*/
-        return [];
-   }
-    public static  function getUser($_login,$_password){
+    public static function GetAllUsers( ){
+      $db = new  Db();
+        return $db->query('SELECT * FROM '.self::TABLE.' ORDER BY name_user;', '\App\Models\User','\App\Models\User' );
+    }
+    public static  function getUser(string $_login,string $_password){
         if($_login !='' && $_password != ''){
-            $dsn = 'mysql:host=127.0.0.1;dbname=team_project5';
-            $dbh = new \PDO($dsn,'root','');
-            $sth = $dbh->prepare("SELECT * FROM users  WHERE login = :login AND  password = :password;");
-            $sth->execute([':login' => $_login,':password'=>$_password]);
-            $data = $sth->fetchAll();
-            if(null != $data){
-                return $data;
-            }
-            else{
-               // echo 'такого пользователя нет :-( <br>';
-                return null;
-            }
+            $db = new Db();
+            $qu = "SELECT * FROM ".self::TABLE."  WHERE login ='$_login' AND  password = '$_password';";
+           // var_dump($qu);
+            $res = $db->query($qu, self::class );
+                return $res;
         }
     }
     public static function addUser($_name_user,$_email_user,$_login,$_password,$_date_req, $_id_role=1 ,$_date_last_visit ='null',$_ip_last_visit='null'){
